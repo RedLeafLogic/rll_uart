@@ -18,8 +18,25 @@ pins, and checks the line-status register and received byte through Wishbone.
 
 ## Run
 
-Run the following commands from an Intel FPGA command prompt with Quartus Prime
-and ModelSim/Questa available in `PATH`:
+The preferred entry point is the Makefile:
+
+```sh
+cd gate
+make                 # regenerate the netlist and run the functional test
+make functional-existing  # reuse the existing uart_top.vo
+make clean
+```
+
+On WSL, the Makefile defaults to the installation under
+`/mnt/f/intelFPGA_lite22.1std`. Override `INTELFPGA_ROOT`, `QUARTUS_EDA`, or
+`VSIM` when the tools are installed elsewhere. When the tools are already in
+`PATH`, the same targets can be selected explicitly, for example:
+
+```sh
+make QUARTUS_EDA=quartus_eda VSIM=vsim
+```
+
+The existing batch files remain available from an Intel FPGA command prompt:
 
 ```bat
 cd gate
