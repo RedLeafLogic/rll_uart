@@ -1,0 +1,32 @@
+onerror {quit -code 1 -force}
+transcript file gate_sim.log
+
+if {![file exists uart_top.vo]} {
+    echo "ERROR: gate/uart_top.vo is missing. Run generate_netlist.bat first."
+    quit -code 2 -force
+}
+if {![file exists uart_top_v.sdo]} {
+    echo "ERROR: gate/uart_top_v.sdo is missing. Run generate_netlist.bat first."
+    quit -code 2 -force
+}
+
+if {[file exists work]} {
+    vdel -lib work -all
+}
+vlib work
+vmap work work
+
+vlog -work work -timescale 1ps/1ps ../lib/intelFPGA_lite22.1std/220model.v
+vlog -work work -timescale 1ps/1ps ../lib/intelFPGA_lite22.1std/altera_primitives.v
+vlog -work work -timescale 1ps/1ps ../lib/intelFPGA_lite22.1std/altera_mf.v
+vlog -work work -timescale 1ps/1ps ../lib/intelFPGA_lite22.1std/cyclone10lp_atoms.v
+vlog -work work -timescale 1ps/1ps uart_top.vo
+vlog -sv -work work -timescale 1ns/1ps tb_uart_gate.sv
+
+vsim -t 1ps -sdfmax /tb_uart_gate/dut=uart_top_v.sdo work.tb_uart_gate
+log -r /*
+vcd file gate_sim.vcd
+vcd add -r /tb_uart_gate/*
+run -all
+vcd flush
+quit -code 0 -force

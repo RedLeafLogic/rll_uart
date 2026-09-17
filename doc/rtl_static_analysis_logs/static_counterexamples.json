@@ -1,0 +1,82 @@
+{
+  "clear_at_15_bytes": {
+    "before": [
+      15,
+      0,
+      0
+    ],
+    "after": [
+      0,
+      0,
+      1
+    ],
+    "flags": {
+      "empty": 0,
+      "full": 1
+    },
+    "next_idle": [
+      0,
+      0,
+      1
+    ],
+    "next_flags": {
+      "empty": 0,
+      "full": 1
+    }
+  },
+  "full_simultaneous_push_pop": {
+    "before": [
+      0,
+      0,
+      1
+    ],
+    "after": [
+      1,
+      1,
+      0
+    ],
+    "flags": {
+      "empty": 1,
+      "full": 0
+    }
+  },
+  "pop_empty": {
+    "after": [
+      0,
+      1,
+      0
+    ],
+    "flags": {
+      "empty": 0,
+      "full": 0
+    }
+  },
+  "push_full": {
+    "after": [
+      1,
+      0,
+      1
+    ],
+    "flags": {
+      "empty": 0,
+      "full": 0
+    }
+  },
+  "trigger_threshold4_w5_r1_f0": {
+    "occupancy": 4,
+    "rtl_compare": 6,
+    "rtl_trigger": false
+  },
+  "trigger_threshold4_w5_r0_f0": {
+    "occupancy": 5,
+    "rtl_compare": 5,
+    "rtl_trigger": false
+  },
+  "interrupt_other_set_loses_clear": {
+    "pending": 1,
+    "set": 16,
+    "clear": 1,
+    "rtl_next": 17,
+    "per_bit_next": 16
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "tool": "Verilator 5.050 2026-07-01 rev v5.050",
+  "simulation_run": false,
+  "checks": [
+    {
+      "log": "align_4b.log",
+      "exit_code": 0,
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "log": "align_1b.log",
+      "exit_code": 0,
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "log": "syn_align_4b.log",
+      "exit_code": 0,
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "log": "syn_align_1b.log",
+      "exit_code": 0,
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "log": "bench_align_4b.log",
+      "exit_code": 0,
+      "warnings": 0,
+      "errors": 0
+    },
+    {
+      "log": "bench_align_1b.log",
+      "exit_code": 0,
+      "warnings": 0,
+      "errors": 0
+    }
+  ],
+  "changed_existing_files": [
+    "rtl/fifo_interface.sv",
+    "rtl/uart_16550_rll.sv",
+    "rtl/uart_baud.sv",
+    "rtl/uart_codec_state.sv",
+    "rtl/uart_fifo.sv",
+    "rtl/uart_interface.sv",
+    "rtl/uart_noize_shaver.sv",
+    "rtl/uart_package.sv",
+    "rtl/uart_receiver.sv",
+    "rtl/uart_register.sv",
+    "rtl/uart_transmitter.sv",
+    "bench/uart_interface_be.sv",
+    "sim/makefile",
+    "sim/uart_test.sv",
+    "syn/uart_top.qsf"
+  ]
+}

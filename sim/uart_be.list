@@ -1,0 +1,4 @@
+../bench/uart_top_package.sv
+../bench/uart_interface_be.sv
+../bench/uart_wrapper.sv
+../bench/top.sv

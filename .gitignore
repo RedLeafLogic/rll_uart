@@ -1,0 +1,64 @@
+# OS and editor files
+.DS_Store
+Thumbs.db
+*~
+*.swp
+*.swo
+.vscode/
+.idea/
+
+# Environment and credentials
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+
+# Verilator build output
+obj_dir/
+**/obj_dir/
+
+# Compiled objects and executables
+*.o
+*.a
+*.so
+*.dll
+*.exe
+*.gch
+*.d
+*.out
+
+# Simulation waveforms and dumps
+*.fst
+*.vcd
+*.wlf
+*.ghw
+*.dump
+transcript
+vsim.wlf
+
+# Simulator working directories
+work/
+**/work/
+gate/work_functional/
+modelsim.ini
+
+# Quartus generated files and directories
+db/
+incremental_db/
+output_files/
+simulation/
+*.qws
+*.qdf
+*.rpt
+*.summary
+*.smsg
+*.jdi
+*.sof
+*.pof
+*.rbf
+
+# Logs created by local tool runs
+*.log
