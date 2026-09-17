@@ -42,7 +42,7 @@ vsim.wlf
 # Simulator working directories
 work/
 **/work/
-gate/work_functional/
+/gate/work_functional/
 modelsim.ini
 
 # Quartus generated files and directories
