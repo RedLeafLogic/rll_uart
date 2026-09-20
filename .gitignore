@@ -62,3 +62,11 @@ simulation/
 
 # Logs created by local tool runs
 *.log
+
+# Intel/Altera files retained locally, excluded from version control
+/lib/altera_q91sp1/
+/lib/intelFPGA_lite22.1std/
+/gate/uart_top.vo
+/syn/uart_top.pin
+/syn/uart_top.qpf
+/syn/uart_top.qsf
