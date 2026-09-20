@@ -59,6 +59,8 @@ simulation/
 *.sof
 *.pof
 *.rbf
+*.done
+*.sld
 
 # Logs created by local tool runs
 *.log

@@ -1,0 +1,121 @@
+# =========================================================
+# FPGA OSS CAD Suite environment launcher
+#   Yosys     : v0.68
+#   Verilator : v5.050
+# =========================================================
+
+# Tool versions passed into Dockerfile.
+YOSYS_TAG ?= v0.68
+VERILATOR_TAG ?= v5.050
+
+YOSYS_VERSION := $(patsubst v%,%,$(YOSYS_TAG))
+VERILATOR_VERSION := $(patsubst v%,%,$(VERILATOR_TAG))
+
+# Keep the existing repository name, but make both tool versions visible.
+IMAGE_NAME ?= fpga-suite_080823:y$(YOSYS_VERSION)-v$(VERILATOR_VERSION)
+CONTAINER_NAME ?= verilog_work
+DOCKER ?= docker
+
+# makeの起動ディレクトリに依存せず、Dockerfileとrepository rootを解決する。
+THIS_DIR := $(abspath $(dir $(lastword $(MAKEFILE_LIST))))
+REPO_ROOT := $(abspath $(THIS_DIR)/../..)
+
+# WSLからWindows側docker.exeを使う場合だけbind/build pathをWindows形式にする。
+WIN_DOCKER := $(findstring .exe,$(notdir $(DOCKER)))
+docker_path = $(if $(WIN_DOCKER),$(shell wslpath -w "$(1)"),$(1))
+HOST_THIS_DIR := $(call docker_path,$(THIS_DIR))
+HOST_REPO_ROOT := $(call docker_path,$(REPO_ROOT))
+
+# RAM Disk size (adjust to host memory).
+RAM_DISK_SIZE ?= 8G
+
+# Heavy build outputs are placed under /build (tmpfs).
+# TB-side Makefiles can import these environment variables with ?=.
+OBJ_ROOT ?= /build/vobj
+ROM_OUT ?= /build/rom_dat
+PYTHONPYCACHEPREFIX ?= /build/pycache
+
+# Current UID/GID: avoids ownership problems on /work.
+UID := $(shell id -u)
+GID := $(shell id -g)
+
+# Mount X11 only when the socket directory actually exists.
+# This avoids Docker bind-mount errors on WSL environments without X11/WSLg.
+X11_ARGS :=
+ifneq ("$(wildcard /tmp/.X11-unix)","")
+X11_ARGS += -e DISPLAY=$(DISPLAY) -v /tmp/.X11-unix:/tmp/.X11-unix
+endif
+
+.PHONY: build run versions clean help
+
+# ---------------------------------------------------------
+# Build Docker image
+# ---------------------------------------------------------
+build:
+	@echo "Building $(IMAGE_NAME)"
+	@echo "  Yosys     : $(YOSYS_TAG)"
+	@echo "  Verilator : $(VERILATOR_TAG)"
+	$(DOCKER) build \
+		--build-arg YOSYS_TAG=$(YOSYS_TAG) \
+		--build-arg VERILATOR_TAG=$(VERILATOR_TAG) \
+		-t $(IMAGE_NAME) \
+		"$(HOST_THIS_DIR)"
+
+# ---------------------------------------------------------
+# Start container
+# /work  : host project directory (RW)
+# /build : tmpfs / RAM disk for heavy temporary I/O
+# ---------------------------------------------------------
+run:
+	@echo "Starting $(IMAGE_NAME)"
+	@echo "  /work  = $(REPO_ROOT) (RW)"
+	@echo "  /build = tmpfs $(RAM_DISK_SIZE)"
+	$(DOCKER) run -it --rm \
+		--name $(CONTAINER_NAME) \
+		--user $(UID):$(GID) \
+		--net=host \
+		$(X11_ARGS) \
+		-e OBJ_ROOT=$(OBJ_ROOT) \
+		-e VERILATOR_OBJ_ROOT=$(OBJ_ROOT) \
+		-e ROM_OUT=$(ROM_OUT) \
+		-e PYTHONPYCACHEPREFIX=$(PYTHONPYCACHEPREFIX) \
+		--mount "type=bind,source=$(HOST_REPO_ROOT),target=/work" \
+		--tmpfs /build:rw,size=$(RAM_DISK_SIZE),exec,mode=1777 \
+		$(IMAGE_NAME) bash
+
+# ---------------------------------------------------------
+# Print installed versions without entering the container
+# ---------------------------------------------------------
+versions:
+	$(DOCKER) run --rm \
+		--tmpfs /build:rw,size=1G,exec,mode=1777 \
+		$(IMAGE_NAME) \
+		bash -c '\
+			echo "--- Yosys ---"; yosys -V; \
+			echo "--- Verilator ---"; verilator --version; \
+			echo "--- SBY ---"; command -v sby; \
+			echo "--- Z3 ---"; z3 --version; \
+			echo "--- Yices2 ---"; yices-smt2 --version; \
+			echo "--- cc65 ---"; ca65 --version; ld65 --version'
+
+# Remove a named container if one remains.
+clean:
+	@$(DOCKER) rm -f $(CONTAINER_NAME) 2>/dev/null || true
+
+help:
+	@echo "Usage:"
+	@echo "  make -f make_env build     Build OSS CAD Suite"
+	@echo "  make -f make_env run       Start container"
+	@echo "  make -f make_env versions  Show installed tool versions"
+	@echo "  make -f make_env clean     Remove leftover named container"
+	@echo ""
+	@echo "Defaults:"
+	@echo "  IMAGE_NAME=$(IMAGE_NAME)"
+	@echo "  DOCKER=$(DOCKER)"
+	@echo "  REPO_ROOT=$(REPO_ROOT)"
+	@echo "  THIS_DIR=$(THIS_DIR)"
+	@echo "  YOSYS_TAG=$(YOSYS_TAG)"
+	@echo "  VERILATOR_TAG=$(VERILATOR_TAG)"
+	@echo "  RAM_DISK_SIZE=$(RAM_DISK_SIZE)"
+	@echo "  OBJ_ROOT=$(OBJ_ROOT)"
+	@echo "  ROM_OUT=$(ROM_OUT)"

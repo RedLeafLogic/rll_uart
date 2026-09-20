@@ -1,0 +1,78 @@
+{
+  "yosys_version": "Yosys 0.68 (git sha1 38e001a6f, Release, GNU /usr/bin/c++ 14.2.0)",
+  "docker_image": "fpga-suite_080823:y0.68-v5.050",
+  "docker_image_id": "sha256:e064abeff97f8a3265d7f0735bd9607f2755322c11370d80f4e1de54456d0479",
+  "top": "uart_top",
+  "flow": "read_slang -DSYN; synth -top uart_top -flatten; check -assert",
+  "metric": "Generic combinational cells (including mux/inverter); one-bit FF cells. Not NAND2 equivalents.",
+  "source_sha256": {
+    "rtl/uart_package.sv": "e832071a461bd832913f3baa88562c9293614fc194114e36a549e9f8309ae769",
+    "rtl/fifo_package.sv": "562c1fda05abc4ab44e07f80f627fb93bb955e71013eb031992387e09b189252",
+    "rtl/uart_interface.sv": "154274d7b16489110a5de22a10355bb60b2bab0494ec7dfb1104851b5a7d3cf7",
+    "rtl/fifo_interface.sv": "f67d366fbf2f1aa295c66ded1db5517e017c82f0e6d68e438acdf0863a7c6cf8",
+    "rtl/uart_16550_rll.sv": "86acaf512455b441d8f866cf077cf6d6734fa4f281a05527af5d5e79b348a03f",
+    "rtl/uart_codec_state.sv": "9bc42c1669c57298547fbda4d3c0669bd69e3fe9e6e97334599918b9af8ab739",
+    "rtl/uart_receiver.sv": "5823d38ca03e28bfd8e8df39cf70977c4b056d1ba0c483068378c233823b6b38",
+    "rtl/uart_register.sv": "764006e9107ae87d590a6987171ef8ebaab79892c2a3a3a7830f739625802415",
+    "rtl/uart_transmitter.sv": "c05569096bdb578d7a6e31324b0ab73c26f46727d84df460be01eeda0528b262",
+    "rtl/uart_fifo.sv": "96a68a8f3f07cdf89d551aa79f6aa05e9dcf8fdebbbbd9d7113e8d672ee54668",
+    "rtl/uart_baud.sv": "83340a6192935c8c0c1ca73bac5c42e8ee36979fe71a4299f24c4919e6c6b526",
+    "rtl/uart_noize_shaver.sv": "40874665bea1f63789a6b54a25cef7fb7a3a9296b00a8a46e4716cc60f92d84c",
+    "bench/uart_top.sv": "f3749278fcdaedf89bf1dcfce10e6b916366d5d7ba9c3e781ec16e88e123cde0",
+    "sim/uart_rtl.list": "ff572aa4fab46c5854f36ca0335f775345e5bff3ef99ec047c86b56fc7419af4",
+    "syn/yosys/run.py": "6c7abdb3ed9d9841c80b8d92924712f0b94e4ff7e30118ff0b53d3b3a02f1f6c",
+    "syn/yosys/Makefile": "5271b92fc4e17d39d478c777bca63dc17f270c3dd8f6b851de9e786ba96ed595",
+    "syn/dockerfile/Dockerfile": "995be683f8e58f22b67fab7a41f03ca53b1901ccf8d4dacbc88910e5c99fcd11",
+    "syn/dockerfile/make_env": "fa255bbbee41d47cbaa18d8791f0116f110fdfbe90b52ef7ffff368bdd60c8b3"
+  },
+  "results": [
+    {
+      "configuration": "ALIGN_1B",
+      "combinational_gates": 1771,
+      "flip_flops": 523,
+      "total_cells": 2294,
+      "cells_by_type": {
+        "$_ANDNOT_": 87,
+        "$_AND_": 652,
+        "$_DFFE_PN0N_": 8,
+        "$_DFFE_PN0P_": 118,
+        "$_DFFE_PN1P_": 10,
+        "$_DFFE_PP_": 304,
+        "$_DFF_PN0_": 67,
+        "$_DFF_PN1_": 16,
+        "$_MUX_": 116,
+        "$_NAND_": 575,
+        "$_NOR_": 59,
+        "$_NOT_": 15,
+        "$_ORNOT_": 74,
+        "$_OR_": 102,
+        "$_XNOR_": 51,
+        "$_XOR_": 40
+      }
+    },
+    {
+      "configuration": "ALIGN_4B",
+      "combinational_gates": 1685,
+      "flip_flops": 523,
+      "total_cells": 2208,
+      "cells_by_type": {
+        "$_ANDNOT_": 82,
+        "$_AND_": 624,
+        "$_DFFE_PN0N_": 8,
+        "$_DFFE_PN0P_": 118,
+        "$_DFFE_PN1P_": 10,
+        "$_DFFE_PP_": 304,
+        "$_DFF_PN0_": 67,
+        "$_DFF_PN1_": 16,
+        "$_MUX_": 116,
+        "$_NAND_": 516,
+        "$_NOR_": 61,
+        "$_NOT_": 13,
+        "$_ORNOT_": 61,
+        "$_OR_": 123,
+        "$_XNOR_": 49,
+        "$_XOR_": 40
+      }
+    }
+  ]
+}
